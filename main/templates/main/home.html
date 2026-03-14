@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero секция -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4 fade-in">Современная медицинская диагностика</h1>
+        <p class="lead mb-5 fade-in">Точная диагностика для вашего здоровья и благополучия</p>
+        <a href="{% url 'services:category-list' %}" class="btn btn-light btn-lg px-5 py-3 me-3 fade-in">Наши услуги</a>
+        <a href="{% url 'accounts:register' %}" class="btn btn-outline-light btn-lg px-5 py-3 fade-in">Записаться на прием</a>
+    </div>
+</section>
+
+<!-- О компании кратко -->
+<section class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h2>О компании MedCheck</h2>
+            <p>Наша медицинская диагностическая компания предоставляет широкий спектр услуг по выявлению и профилактике различных заболеваний. Мы используем современное оборудование и передовые методы диагностики, чтобы обеспечить точные и надежные результаты.</p>
+            <p>Наша команда состоит из высококвалифицированных специалистов с многолетним опытом работы в области медицины. Мы стремимся к тому, чтобы каждый пациент чувствовал себя в безопасности и получал индивидуальный подход.</p>
+            <a href="{% url 'main:about' %}" class="btn btn-primary mt-3">Узнать больше</a>
+        </div>
+        <div class="col-md-6">
+            <img src="/media/service_images/Клиника.png" alt="MedCheck Clinic" class="img-fluid rounded shadow">
+        </div>
+    </div>
+</section>
+
+<!-- Услуги -->
+<section class="bg-light py-5">
+    <div class="container">
+    <div class="row">
+        {% for category in categories %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="service-card h-100">
+                <div class="service-card-body">
+                    {% with main_image=category.get_main_image %}
+                        {% if main_image %}
+                            <img src="{{ main_image.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
+                        {% else %}
+                            {% with fallback_image=category.get_fallback_image %}
+                                {% if fallback_image %}
+                                    <img src="{{ fallback_image.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
+                                {% else %}
+                                    <img src="/static/images/placeholder.jpg" alt="Нет изображения" class="img-fluid service-card-img mb-3">
+                                {% endif %}
+                            {% endwith %}
+                        {% endif %}
+                    {% endwith %}
+                    <h3>{{ category.name }}</h3>
+                    <p>{{ category.description }}</p>
+                    <a href="{% url 'services:category-services' category.id %}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Контакты -->
+<section class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Свяжитесь с нами</h2>
+            <p>Готовы записаться на прием или хотите получить консультацию? Свяжитесь с нами любым удобным способом.</p>
+            <div class="contact-info">
+                <div class="contact-info-item">
+                    <i class="fas fa-map-marker-alt contact-info-icon"></i>
+                    <strong>Адрес:</strong> г. Санкт_Петербург, ул. Медицинская, 1
+                </div>
+                <div class="contact-info-item">
+                    <i class="fas fa-phone contact-info-icon"></i>
+                    <strong>Телефон:</strong> +7 (812) 123-45-67
+                </div>
+                <div class="contact-info-item">
+                    <i class="fas fa-envelope contact-info-icon"></i>
+                    <strong>Email:</strong> info@medcheck.ru
+                </div>
+                <div class="contact-info-item">
+                    <i class="fas fa-clock contact-info-icon"></i>
+                    <strong>Часы работы:</strong> Пн-Пт: 8:00-20:00, Сб-Вс: 9:00-18:00
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h2>Форма обратной связи</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Имя</label>
+                    <input type="text" class="form-control" id="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Телефон</label>
+                    <input type="tel" class="form-control" id="phone">
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Сообщение</label>
+                    <textarea class="form-control" id="message" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Отправить</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Заголовок -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">{{ service.name }}</h1>
+        <p class="lead">{{ service.category.name }}</p>
+    </div>
+</section>
+
+<!-- Детальная информация об услуге -->
+<section class="container my-5">
+    <div class="row">
+        <!-- Основная информация -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2>Описание услуги</h2>
+                    <p class="lead">{{ service.short_description }}</p>
+                    <div class="mb-4">
+                        {{ service.description|linebreaks }}
+                    </div>
+                    
+                    <!-- Подготовка к процедуре -->
+                    {% if service.preparation %}
+                    <div class="alert alert-info">
+                        <h4><i class="fas fa-info-circle"></i> Подготовка к процедуре</h4>
+                        {{ service.preparation|linebreaks }}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Время получения результатов -->
+                    {% if service.results_time %}
+                    <div class="alert alert-success">
+                        <h4><i class="fas fa-clock"></i> Время получения результатов</h4>
+                        {{ service.results_time }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Галерея изображений -->
+            {% if service.images.all %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2>Фотогалерея</h2>
+                    <div class="row">
+                        {% for image in service.images.all %}
+                        <div class="col-md-6 mb-3">
+                            <img src="{{ image.image.url }}" alt="{{ service.name }}" class="img-fluid rounded shadow">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Боковая панель -->
+        <div class="col-lg-4">
+            <div class="card sticky-top" style="top: 100px;">
+                <div class="card-body">
+                    <h3 class="card-title">Информация об услуге</h3>
+                    
+                    <div class="list-group list-group-flush mb-4">
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>Цена</strong>
+                                <span class="text-primary fw-bold">{{ service.price_formatted }} ₽</span>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>Длительность</strong>
+                                <span>{{ service.duration }} минут</span>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>Результаты</strong>
+                                <span>{{ service.results_time }}</span>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>Категория</strong>
+                                <span>{{ service.category.name }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопки действий -->
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-calendar-check"></i> Записаться на прием
+                        </a>
+                        <a href="{% url 'main:contact' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-envelope"></i> Задать вопрос
+                        </a>
+                    </div>
+                    
+                    <!-- Рекомендуемые услуги -->
+                    {% if service.category.services.count > 1 %}
+                    <div class="mt-4">
+                        <h5>Похожие услуги</h5>
+                        <ul class="list-unstyled">
+                            {% for other_service in service.category.services.all %}
+                            {% if other_service != service and forloop.counter <= 3 %}
+                            <li class="mb-2">
+                                <a href="{% url 'services:service_detail' other_service.id %}" class="text-decoration-none">
+                                    <i class="fas fa-arrow-right text-primary me-2"></i> {{ other_service.name }}
+                                    <small class="text-muted">({{ other_service.price_formatted }} ₽)</small>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

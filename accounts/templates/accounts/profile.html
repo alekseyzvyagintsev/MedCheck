@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Заголовок -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Личный кабинет</h1>
+        <p class="lead">Добро пожаловать, {{ user.username }}!</p>
+    </div>
+</section>
+
+<!-- Основное содержимое -->
+<section class="container my-5">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-lg-3 mb-4">
+            <div class="list-group sticky-top" style="top: 100px;">
+                <a href="#profile" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-user me-2"></i> Профиль
+                </a>
+                <a href="#appointments" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-check me-2"></i> Записи на прием
+                </a>
+                <a href="#results" class="list-group-item list-group-item-action">
+                    <i class="fas fa-file-medical me-2"></i> Результаты диагностики
+                </a>
+                <a href="#settings" class="list-group-item list-group-item-action">
+                    <i class="fas fa-cog me-2"></i> Настройки
+                </a>
+                <a href="{% url 'accounts:logout' %}" class="list-group-item list-group-item-action text-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i> Выйти
+                </a>
+            </div>
+        </div>
+        
+        <!-- Основная панель -->
+        <div class="col-lg-9">
+            <!-- Профиль -->
+            <div id="profile" class="mb-5">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0"><i class="fas fa-user me-2"></i> Профиль</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-4">
+                                <img src="https://via.placeholder.com/150" alt="Фото профиля" class="rounded-circle img-fluid shadow">
+                                <button class="btn btn-outline-primary btn-sm mt-2">Изменить фото</button>
+                            </div>
+                            <div class="col-md-8">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="firstName" class="form-label">Имя</label>
+                                            <input type="text" class="form-control" id="firstName" value="Иван">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="lastName" class="form-label">Фамилия</label>
+                                            <input type="text" class="form-control" id="lastName" value="Иванов">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" value="ivan.ivanov@example.com">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Телефон</label>
+                                        <input type="tel" class="form-control" id="phone" value="+7 (999) 123-45-67">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="birthDate" class="form-label">Дата рождения</label>
+                                        <input type="date" class="form-control" id="birthDate" value="1985-05-15">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Записи на прием -->
+            <div id="appointments" class="mb-5">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0"><i class="fas fa-calendar-check me-2"></i> Записи на прием</h3>
+                        <button class="btn btn-light btn-sm">
+                            <i class="fas fa-plus me-1"></i> Новая запись
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <!-- Активные записи -->
+                        <h4 class="mb-3">Предстоящие приемы</h4>
+                        <div class="appointment-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5>Прием у терапевта</h5>
+                                    <p class="text-muted mb-1">Др. Иванов А.С. • Кабинет 101</p>
+                                    <p class="text-muted mb-0"><i class="far fa-calendar-alt me-1"></i> 15 марта 2026 • <i class="far fa-clock me-1"></i> 14:30</p>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-outline-secondary btn-sm">Изменить</button>
+                                    <button class="btn btn-outline-danger btn-sm">Отменить</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="appointment-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5>УЗИ брюшной полости</h5>
+                                    <p class="text-muted mb-1">Др. Сидоров В.К. • Кабинет 205</p>
+                                    <p class="text-muted mb-0"><i class="far fa-calendar-alt me-1"></i> 18 марта 2026 • <i class="far fa-clock me-1"></i> 10:00</p>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-outline-secondary btn-sm">Изменить</button>
+                                    <button class="btn btn-outline-danger btn-sm">Отменить</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Прошедшие записи -->
+                        <h4 class="mb-3 mt-4">Прошедшие приемы</h4>
+                        <div class="appointment-card bg-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5>Консультация кардиолога</h5>
+                                    <p class="text-muted mb-1">Др. Петрова Е.М. • Кабинет 105</p>
+                                    <p class="text-muted mb-0"><i class="far fa-calendar-alt me-1"></i> 10 марта 2026 • <i class="far fa-clock me-1"></i> 16:00</p>
+                                </div>
+                                <button class="btn btn-outline-primary btn-sm">Просмотреть результаты</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Результаты диагностики -->
+            <div id="results" class="mb-5">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0"><i class="fas fa-file-medical me-2"></i> Результаты диагностики</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Дата</th>
+                                        <th>Услуга</th>
+                                        <th>Врач</th>
+                                        <th>Статус</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>10.03.2026</td>
+                                        <td>ЭКГ</td>
+                                        <td>Др. Петрова Е.М.</td>
+                                        <td><span class="badge bg-success">Готово</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary">Просмотреть</button>
+                                            <button class="btn btn-sm btn-outline-secondary">Скачать PDF</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>10.03.2026</td>
+                                        <td>Общий анализ крови</td>
+                                        <td>Лаборатория</td>
+                                        <td><span class="badge bg-success">Готово</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary">Просмотреть</button>
+                                            <button class="btn btn-sm btn-outline-secondary">Скачать PDF</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>18.03.2026</td>
+                                        <td>УЗИ брюшной полости</td>
+                                        <td>Др. Сидоров В.К.</td>
+                                        <td><span class="badge bg-warning">В обработке</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-secondary" disabled>Недоступно</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Настройки -->
+            <div id="settings">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0"><i class="fas fa-cog me-2"></i> Настройки</h3>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="notifications" checked>
+                                    <label class="form-check-label" for="notifications">
+                                        Получать уведомления о предстоящих приемах
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                    <label class="form-check-label" for="emailNotifications">
+                                        Получать email-уведомления
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="smsNotifications">
+                                    <label class="form-check-label" for="smsNotifications">
+                                        Получать SMS-уведомления
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="language" class="form-label">Язык интерфейса</label>
+                                <select class="form-select" id="language">
+                                    <option>Русский</option>
+                                    <option>English</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Сохранить настройки</button>
+                        </form>
+                        
+                        <hr class="my-4">
+                        
+                        <div>
+                            <h5 class="text-danger">Удаление аккаунта</h5>
+                            <p class="text-muted">Удаление аккаунта приведет к безвозвратному удалению всех ваших данных, включая историю приемов и результаты диагностики.</p>
+                            <button class="btn btn-outline-danger">Удалить аккаунт</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

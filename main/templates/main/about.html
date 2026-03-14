@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- О компании -->
+<section class="container my-5">
+    <div class="text-center mb-5">
+        <h1>О компании MedCheck</h1>
+        <p class="lead">Мы заботимся о вашем здоровье с 2010 года</p>
+    </div>
+
+    <!-- История компании -->
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <img src="/media/service_images/Инструментальная.jpg" alt="История компании" class="img-fluid rounded shadow">
+        </div>
+        <div class="col-md-6">
+            <h2>Наша история</h2>
+            <p>Компания MedCheck была основана в 2010 году группой врачей с миссией предоставить доступную и качественную медицинскую диагностику каждому пациенту.</p>
+            <p>За более чем 15 лет работы мы провели более 100 000 диагностических процедур и помогли тысячам пациентов вовремя выявить заболевания и начать эффективное лечение.</p>
+            <p>Сегодня мы являемся одной из ведущих диагностических клиник в Санкт_Петербурге, оснащенной самым современным оборудованием и штатом высококвалифицированных специалистов.</p>
+        </div>
+    </div>
+
+    <!-- Миссия и ценности -->
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <h2 class="text-center mb-4">Наша миссия и ценности</h2>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <div class="p-4 bg-light rounded h-100">
+                        <i class="fas fa-heart fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h3>Забота о пациенте</h3>
+                        <p>Мы ставим интересы и здоровье наших пациентов на первое место во всех аспектах нашей работы.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="p-4 bg-light rounded h-100">
+                        <i class="fas fa-stethoscope fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h3>Профессионализм</h3>
+                        <p>Наши специалисты постоянно совершенствуют свои знания и навыки, используя только проверенные методы диагностики.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="p-4 bg-light rounded h-100">
+                        <i class="fas fa-microscope fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h3>Точность</h3>
+                        <p>Мы используем современное оборудование и строгие протоколы для обеспечения максимально точных результатов диагностики.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Команда врачей -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center mb-5">Наша команда</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="doctor-card">
+                        <img src="/media/service_images/IvanovAS.png" alt="Иванов А.Н." class="doctor-img">
+                        <h3>Иванов Андрей Серафимович</h3>
+                        <p class="doctor-specialty">Главный врач, терапевт</p>
+                        <p>Более 15 лет опыта работы в области терапии и диагностики. Специалист по комплексной диагностике.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="doctor-card">
+                        <img src="/media/service_images/PetrovaEN.webp" alt="Петрова Е.Н." class="doctor-img">
+                        <h3>Петрова Екатерина Николаевна</h3>
+                        <p class="doctor-specialty">Кардиолог</p>
+                        <p>Эксперт в области сердечно-сосудистых заболеваний. Проводит углубленную диагностику и составляет индивидуальные планы лечения.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="doctor-card">
+                        <img src="/media/service_images/SidorovVK.webp" alt="Сидоров В.К." class="doctor-img">
+                        <h3>Сидоров Владимир Константинович</h3>
+                        <p class="doctor-specialty">Невролог</p>
+                        <p>Специалист по диагностике заболеваний нервной системы. Использует современные методы нейродиагностики.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

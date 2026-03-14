@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Контакты -->
+<section class="container my-5">
+    <div class="text-center mb-5">
+        <h1>Контакты</h1>
+        <p class="lead">Свяжитесь с нами любым удобным способом</p>
+    </div>
+
+    <div class="row">
+        <!-- Контактная информация -->
+        <div class="col-md-6">
+            <div class="contact-info">
+                <h2>Наши контакты</h2>
+                
+                <div class="contact-info-item">
+                    <i class="fas fa-map-marker-alt contact-info-icon"></i>
+                    <strong>Адрес:</strong>
+                    <p>123456, г. Санкт-Петербург, ул. Медицинская, д. 1<br>
+                    Бизнес-центр "Медикал Холл", 1-й этаж</p>
+                </div>
+                
+                <div class="contact-info-item">
+                    <i class="fas fa-phone contact-info-icon"></i>
+                    <strong>Телефоны:</strong>
+                    <p><strong>Справочная:</strong> +7 (812) 123-45-67<br>
+                    <strong>Запись на прием:</strong> +7 (812) 123-45-68<br>
+                    <strong>Экстренные случаи:</strong> +7 (812) 123-45-69</p>
+                </div>
+                
+                <div class="contact-info-item">
+                    <i class="fas fa-envelope contact-info-icon"></i>
+                    <strong>Email:</strong>
+                    <p><strong>Общие вопросы:</strong> info@medcheck.ru<br>
+                    <strong>Рекламации:</strong> complaints@medcheck.ru<br>
+                    <strong>Сотрудничество:</strong> partner@medcheck.ru</p>
+                </div>
+                
+                <div class="contact-info-item">
+                    <i class="fas fa-clock contact-info-icon"></i>
+                    <strong>Часы работы:</strong>
+                    <p><strong>Прием пациентов:</strong> Пн-Пт: 8:00-20:00, Сб-Вс: 9:00-18:00<br>
+                    <strong>Лаборатория:</strong> Пн-Пт: 7:00-14:00, Сб: 8:00-12:00<br>
+                    <strong>Выдача результатов:</strong> Пн-Пт: 9:00-19:00, Сб-Вс: 9:00-17:00</p>
+                </div>
+                
+                <div class="contact-info-item">
+                    <i class="fas fa-credit-card contact-info-icon"></i>
+                    <strong>Оплата:</strong>
+                    <p>Принимаем к оплате банковские карты, наличные, а также работаем с медицинскими страховками (ДМС).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Форма обратной связи -->
+        <div class="col-md-6">
+            <h2>Форма обратной связи</h2>
+            <form>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="firstName" class="form-label">Имя</label>
+                        <input type="text" class="form-control" id="firstName" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="lastName" class="form-label">Фамилия</label>
+                        <input type="text" class="form-control" id="lastName" required>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Телефон</label>
+                    <input type="tel" class="form-control" id="phone">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Тема сообщения</label>
+                    <select class="form-select" id="subject">
+                        <option>Выберите тему</option>
+                        <option>Запись на прием</option>
+                        <option>Уточнение по услугам</option>
+                        <option>Рекламация</option>
+                        <option>Сотрудничество</option>
+                        <option>Другое</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="message" class="form-label">Сообщение</label>
+                    <textarea class="form-control" id="message" rows="5" required></textarea>
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="consent" required>
+                    <label class="form-check-label" for="consent">Я даю согласие на обработку персональных данных</label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Отправить сообщение</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Карта -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2 class="mb-4">Как нас найти</h2>
+            <div class="map-container">
+                <!-- Здесь будет карта -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2245.389224778556!2d30.32448881596265!3d59.93509279825554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a5a5a5a5a5a%3A0x5a5a5a5a5a5a5a5a!2sRed%20Square!5e0!3m2!1sen!2sru!4v1650000000000!5m2!1sen!2sru" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Дополнительная информация -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <h4><i class="fas fa-info-circle"></i> Полезная информация</h4>
+                <ul>
+                    <li>Пациентам рекомендуется приходить за 15 минут до назначенного времени</li>
+                    <li>Для лабораторных исследований необходимо приходить натощак</li>
+                    <li>При себе необходимо иметь паспорт и медицинский полис</li>
+                    <li>Для первичного приема желательно иметь на руках предыдущие результаты обследований</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

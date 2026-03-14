@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Заголовок -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Наши медицинские услуги</h1>
+        <p class="lead mb-5">Комплексная диагностика для вашего здоровья</p>
+    </div>
+</section>
+
+<!-- Поиск и фильтрация -->
+<section class="container my-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Поиск услуг" aria-label="Поиск">
+                <button class="btn btn-primary" type="submit">Найти</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Список услуг -->
+<section class="container my-5">
+    <div class="row">
+        {% for service in services %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="service-card h-100">
+                <div class="service-card-body">
+                    <h3>{{ service.name }}</h3>
+                    <p class="text-muted">{{ service.category.name }}</p>
+                    <p>{{ service.short_description }}</p>
+                    <p class="service-price">{{ service.price_formatted }} ₽</p>
+                    <div class="d-flex justify-content-between">
+                        <small class="text-muted">Длительность: {{ service.duration }} мин</small>
+                        <small class="text-muted">Результаты: {{ service.results_time }}</small>
+                    </div>
+                    <a href="{% url 'services:service_detail' service.id %}" class="btn btn-primary mt-3">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -9,12 +9,12 @@
     </div>
 </section>
 
-<!-- Поиск и фильтрация -->
+<!-- Поиск -->
 <section class="container my-5">
     <div class="row mb-4">
         <div class="col-12">
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Поиск услуг" aria-label="Поиск">
+            <form class="d-flex" method="get">
+                <input class="form-control me-2" type="search" name="search" placeholder="Поиск услуг" aria-label="Поиск" value="{{ search_query|default:'' }}">
                 <button class="btn btn-primary" type="submit">Найти</button>
             </form>
         </div>
@@ -24,30 +24,57 @@
 <!-- Список услуг -->
 <section class="container my-5">
     <div class="row">
-        {% for category in categories %}
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="service-card h-100">
-                <div class="service-card-body">
-                    {% with main_image=category.get_main_image %}
-                        {% if main_image %}
-                            <img src="{{ main_image.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
-                        {% else %}
-                            {% with fallback_image=category.get_fallback_image %}
-                                {% if fallback_image %}
-                                    <img src="{{ fallback_image.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
-                                {% else %}
-                                    <img src="/static/images/placeholder.jpg" alt="Нет изображения" class="img-fluid service-card-img mb-3">
-                                {% endif %}
-                            {% endwith %}
-                        {% endif %}
-                    {% endwith %}
-                    <h3>{{ category.name }}</h3>
-                    <p>{{ category.description }}</p>
-                    <a href="{% url 'services:category-services' category.id %}" class="btn btn-primary">Подробнее</a>
+        {% if search_query %}
+            <!-- Результаты поиска -->
+            {% for service in services_list %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="service-card h-100">
+                    <div class="service-card-body">
+                        <h3>{{ service.name }}</h3>
+                        <p class="text-muted">{{ service.category.name }}</p>
+                        <p>{{ service.short_description }}</p>
+                        <p class="service-price">{{ service.price_formatted }} ₽</p>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">Длительность: {{ service.duration }} мин</small>
+                            <small class="text-muted">Результаты: {{ service.results_time }}</small>
+                        </div>
+                        <a href="{% url 'services:service_detail' service.id %}" class="btn btn-primary mt-3">Подробнее</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
+            {% if services_list|length == 0 %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Услуги по вашему запросу не найдены</p>
+            </div>
+            {% endif %}
+        {% else %}
+            <!-- Список категорий (если нет поиска) -->
+            {% for category in categories %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="service-card h-100">
+                    <div class="service-card-body">
+                        {% with main_image=category.get_main_image %}
+                            {% if main_image %}
+                                <img src="{{ main_image.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
+                            {% else %}
+                                {% with fallback_image=category.get_fallback_image %}
+                                    {% if fallback_image %}
+                                        <img src="{{ fallback_image.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
+                                    {% else %}
+                                        <img src="/static/images/placeholder.jpg" alt="Нет изображения" class="img-fluid service-card-img mb-3">
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                        {% endwith %}
+                        <h3>{{ category.name }}</h3>
+                        <p>{{ category.description }}</p>
+                        <a href="{% url 'services:category-services' category.id %}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
     </div>
 </section>
 {% endblock %}

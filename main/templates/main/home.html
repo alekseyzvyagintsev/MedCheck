@@ -29,31 +29,26 @@
 <!-- Услуги -->
 <section class="bg-light py-5">
     <div class="container">
-    <div class="row">
-        {% for category in categories %}
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="service-card h-100">
-                <div class="service-card-body">
-                    {% with main_image=category.get_main_image %}
-                        {% if main_image %}
-                            <img src="{{ main_image.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
-                        {% else %}
-                            {% with fallback_image=category.get_fallback_image %}
-                                {% if fallback_image %}
-                                    <img src="{{ fallback_image.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
-                                {% else %}
-                                    <img src="/static/images/placeholder.jpg" alt="Нет изображения" class="img-fluid service-card-img mb-3">
-                                {% endif %}
-                            {% endwith %}
-                        {% endif %}
-                    {% endwith %}
-                    <h3>{{ category.name }}</h3>
-                    <p>{{ category.description }}</p>
-                    <a href="{% url 'services:category-services' category.id %}" class="btn btn-primary">Подробнее</a>
+        <div class="row">
+            {% for category in categories %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="service-card h-100">
+                    <div class="service-card-body">
+                        {% with main_image=category.get_main_image %}
+                            {% if main_image %}
+                                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
+                            {% else %}
+                                <img src="/media/service_category_images/base_category_image.jpg" alt="Нет изображения" class="img-fluid service-card-img mb-3">
+                            {% endif %}
+                        {% endwith %}
+                        <h3>{{ category.name }}</h3>
+                        <p>{{ category.description }}</p>
+                        <a href="{% url 'services:category-services' category.id %}" class="btn btn-primary">Подробнее</a>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </section>
 

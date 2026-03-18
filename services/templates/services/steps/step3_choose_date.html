@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Заголовок -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Запись на приём</h1>
+        <p class="lead">Шаг 3: Выберите дату для приёма к {{ doctor.get_full_name }}</p>
+    </div>
+</section>
+
+<!-- Выбор даты -->
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" action="{% url 'services:choose_date' %}">
+                        {% csrf_token %}
+                        
+                        <!-- Скрытые поля для передачи данных -->
+                        <input type="hidden" name="service_id" value="{{ service.id }}" />
+                        <input type="hidden" name="doctor_id" value="{{ doctor.id }}" />
+                        
+                        <div class="mb-4">
+                            <label for="dateInput" class="form-label">Выберите дату</label>
+                            <input type="date" name="date" id="dateInput" class="form-control" required />
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'services:get_services' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Назад
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                Далее <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

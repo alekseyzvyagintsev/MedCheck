@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Заголовок -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Запись на приём</h1>
+        <p class="lead">Шаг 5: Подтверждение записи</p>
+    </div>
+</section>
+
+<!-- Подтверждение -->
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                    </div>
+                    
+                    <h2>Запись успешно создана!</h2>
+                    <p class="lead">Ваша запись на приём успешно зарегистрирована. Номер записи: #{{ appointment_id }}</p>
+                    
+                    <div class="alert alert-info mt-4">
+                        <p>В ближайшее время с вами свяжется администратор для подтверждения записи.</p>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                        <a href="{% url 'accounts:profile' %}" class="btn btn-primary">
+                            Перейти в профиль
+                        </a>
+                        <a href="{% url 'services:get_services' %}" class="btn btn-outline-secondary">
+                            Записаться на другую услугу
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

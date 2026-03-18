@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% include 'modals/appointment_modal.html' %}
 
 {% block content %}
 <!-- Заголовок -->
@@ -92,9 +93,9 @@
                     
                     <!-- Кнопки действий -->
                     <div class="d-grid gap-2">
-                        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">
+                        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#appointmentModal">
                             <i class="fas fa-calendar-check"></i> Записаться на прием
-                        </a>
+                        </button>
                         <a href="{% url 'main:contact' %}" class="btn btn-outline-primary btn-lg">
                             <i class="fas fa-envelope"></i> Задать вопрос
                         </a>

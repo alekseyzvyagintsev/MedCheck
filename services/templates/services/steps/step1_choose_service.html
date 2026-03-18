@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Заголовок -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Запись на приём</h1>
+        <p class="lead">Шаг 1: Выберите услугу</p>
+    </div>
+</section>
+
+<!-- Выбор услуги -->
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" action="{% url 'services:choose_service' %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="serviceSelect" class="form-label">Выберите услугу</label>
+                            <select name="service_id" id="serviceSelect" class="form-control" required>
+                                <option value="">Выберите услугу...</option>
+                                {% for service in services %}
+                                <option value="{{ service.id }}">{{ service.name }} ({{ service.price }} ₽)</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="submit" class="btn btn-primary">
+                                Далее <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

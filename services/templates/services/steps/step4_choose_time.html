@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Заголовок -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Запись на приём</h1>
+        <p class="lead">Шаг 4: Выберите время для приёма к {{ doctor.get_full_name }} на {{ date|date:"d.m.Y" }}</p>
+    </div>
+</section>
+
+<!-- Выбор времени -->
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" action="{% url 'services:confirm_appointment' %}">
+                        {% csrf_token %}
+                        
+                        <!-- Скрытые поля для передачи данных -->
+                        <input type="hidden" name="service_id" value="{{ service.id }}" />
+                        <input type="hidden" name="doctor_id" value="{{ doctor.id }}" />
+                        <input type="hidden" name="date" value="{{ date|date:"Y-m-d" }}" />
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Доступное время</label>
+                            {% if slots %}
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for slot in slots %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="scheduled_at" value="{{ slot.datetime|date:"Y-m-d H:i:s" }}" id="slot_{{ forloop.counter }}" required>
+                                    <label class="btn btn-outline-primary" for="slot_{{ forloop.counter }}">
+                                        {{ slot.display }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="alert alert-danger">
+                                Нет доступных слотов на выбранную дату
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'services:get_services' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Назад
+                            </a>
+                            <button type="submit" class="btn btn-primary" {% if not slots %}disabled{% endif %}>
+                                Подтвердить <i class="fas fa-check"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

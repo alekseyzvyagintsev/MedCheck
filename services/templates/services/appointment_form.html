@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Заголовок -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Запись на приём</h1>
+        <p class="lead">Выберите услугу, врача и удобное время для посещения</p>
+    </div>
+</section>
+
+<!-- Форма записи -->
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" id="appointmentForm">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mb-4">
+                            {{ form.service.label_tag }}
+                            {{ form.service }}
+                            {% if form.service.errors %}
+                                <div class="text-danger">{{ form.service.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-4">
+                            {{ form.doctor.label_tag }}
+                            {{ form.doctor }}
+                            {% if form.doctor.errors %}
+                                <div class="text-danger">{{ form.doctor.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-4">
+                            {{ form.date.label_tag }}
+                            {{ form.date }}
+                            {% if form.date.errors %}
+                                <div class="text-danger">{{ form.date.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form.scheduled_at.label_tag }}
+                            {{ form.scheduled_at }}
+                            {% if form.scheduled_at.errors %}
+                                <div class="text-danger">{{ form.scheduled_at.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="fas fa-calendar-check"></i> Записаться
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

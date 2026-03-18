@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Заголовок -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Результат диагностики</h1>
+        <p class="lead">Просмотр результатов диагностики</p>
+    </div>
+</section>
+
+<!-- Основное содержимое -->
+<section class="container my-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Информация о результате</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Дата создания:</strong> {{ result.uploaded_at|date:"d.m.Y H:i" }}</p>
+                    <p><strong>Статус:</strong>
+                        {% if result.status == 'completed' %}
+                            <span class="badge bg-success">Готово</span>
+                        {% elif result.status == 'processing' %}
+                            <span class="badge bg-warning">В обработке</span>
+                        {% else %}
+                            <span class="badge bg-danger">Ошибка</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Услуга:</strong> {{ result.appointment.service.name }}</p>
+                    <p><strong>Врач:</strong> {{ result.appointment.doctor.get_full_name }}</p>
+                </div>
+            </div>
+
+            {% if result.description %}
+            <div class="mt-4">
+                <h5>Описание результатов</h5>
+                <p class="text-muted">{{ result.description }}</p>
+            </div>
+            {% endif %}
+
+            {% if result.file %}
+            <div class="mt-4">
+                <h5>Файл с результатами</h5>
+                <div class="d-flex gap-2">
+                    <a href="{{ result.get_file_url }}" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-eye me-2"></i> Просмотреть файл
+                    </a>
+                    <a href="{{ result.get_file_url }}" class="btn btn-outline-secondary" download>
+                        <i class="fas fa-download me-2"></i> Скачать PDF
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'accounts:profile' %}#results" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i> Назад к результатам
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

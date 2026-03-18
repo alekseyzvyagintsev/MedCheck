@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Заголовок -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Запись на приём</h1>
+        <p class="lead">Шаг 2: Выберите врача для услуги "{{ service.name }}"</p>
+    </div>
+</section>
+
+<!-- Выбор врача -->
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" action="{% url 'services:choose_doctor' %}">
+                        {% csrf_token %}
+                        
+                        <!-- Скрытые поля для передачи данных -->
+                        <input type="hidden" name="service_id" value="{{ service.id }}" />
+                        
+                        <div class="mb-4">
+                            <label for="doctorSelect" class="form-label">Выберите врача</label>
+                            <select name="doctor_id" id="doctorSelect" class="form-control" required>
+                                <option value="">Выберите врача...</option>
+                                {% for doctor in doctors %}
+                                <option value="{{ doctor.id }}">{{ doctor.get_full_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'services:get_services' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Назад
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                Далее <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

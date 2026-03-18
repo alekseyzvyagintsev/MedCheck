@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
@@ -54,21 +54,25 @@ def profile(request):
 
     # Получаем записи на приём пользователя как пациента
     active_appointments = Appointment.objects.filter(
-        patient=request.user,
-        is_active=True,
-        scheduled_at__gte=timezone.now()
-    ).select_related('service', 'doctor')
+        patient=request.user, is_active=True, scheduled_at__gte=timezone.now()
+    ).select_related("service", "doctor")
 
     # Получаем результаты диагностики пользователя
-    diagnosis_results = DiagnosisResult.objects.filter(
-        appointment__patient=request.user
-    ).select_related('appointment__service', 'appointment__doctor').order_by('-uploaded_at')
+    diagnosis_results = (
+        DiagnosisResult.objects.filter(appointment__patient=request.user)
+        .select_related("appointment__service", "appointment__doctor")
+        .order_by("-uploaded_at")
+    )
 
-    return render(request, "accounts/profile.html", {
-        "form": form,
-        "active_appointments": active_appointments,
-        "diagnosis_results": diagnosis_results
-    })
+    return render(
+        request,
+        "accounts/profile.html",
+        {
+            "form": form,
+            "active_appointments": active_appointments,
+            "diagnosis_results": diagnosis_results,
+        },
+    )
 
 
 @login_required
@@ -100,11 +104,10 @@ def create_doctor(request):
 login_view = auth_views.LoginView.as_view(template_name="accounts/login.html")
 
 
-# Просто перенаправляем на главную страницу
 def logout_view(request):
-    from django.contrib.auth import logout
-    from django.shortcuts import redirect
-
+    """
+    Выход из системы
+    """
     logout(request)
     return redirect("main:home")
 
@@ -119,5 +122,5 @@ def delete_profile(request):
         user.delete()
         messages.success(request, "Ваш аккаунт успешно удален")
         return redirect("main:home")
-    
+
     return redirect("accounts:profile")

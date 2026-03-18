@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from MedCheck import settings
@@ -188,9 +187,7 @@ class Appointment(models.Model):
         """
         # Проверяем, есть ли уже активная запись на это время
         return not cls.objects.filter(
-            doctor=doctor,
-            scheduled_at=scheduled_at,
-            is_active=True
+            doctor=doctor, scheduled_at=scheduled_at, is_active=True
         ).exists()
 
     patient = models.ForeignKey(
@@ -256,7 +253,6 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"Запись: {self.patient} к {self.doctor} на {self.scheduled_at}"
-
 
 
 class DiagnosisResult(models.Model):

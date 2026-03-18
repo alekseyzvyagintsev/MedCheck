@@ -195,7 +195,7 @@
                                             <p class="text-muted mb-0"><i class="far fa-calendar-alt me-1"></i> {{ appointment.scheduled_at|date:"d F Y" }} - <i class="far fa-clock me-1"></i> {{ appointment.scheduled_at|date:"H:i" }}</p>
                                         </div>
                                         <div class="btn-group">
-                                            <form method="post" action="{% url 'services:delete-appointment' appointment.id %}" style="display: inline;" onsubmit="return confirm('Вы уверены, что хотите отменить эту запись?')">
+                                            <form method="post" action="{% url 'services:delete_appointment' appointment.id %}" style="display: inline;" onsubmit="return confirm('Вы уверены, что хотите отменить эту запись?')">
                                                 {% csrf_token %}
                                                 <button type="submit" class="btn btn-outline-danger btn-sm">Отменить приём врача</button>
                                             </form>
@@ -223,10 +223,9 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Дата</th>
+                                        <th>Время приема</th>
                                         <th>Услуга</th>
                                         <th>Врач</th>
-                                        <th>Время приема</th>
                                         <th>Статус</th>
                                         <th>Действия</th>
                                     </tr>
@@ -234,10 +233,9 @@
                                 <tbody>
                                 {% for result in diagnosis_results %}
                                 <tr>
-                                    <td>{{ result.uploaded_at|date:"d.m.Y" }}</td>
+                                    <td>{{ result.appointment.scheduled_at|date:"d.m.Y H:i" }}</td>
                                     <td>{{ result.appointment.service.name }}</td>
                                     <td>{{ result.appointment.doctor.get_full_name }}</td>
-                                    <td>{{ result.appointment.scheduled_at|date:"d.m.Y H:i" }}</td>
                                     <td>
                                         {% if result.status == 'completed' %}
                                             <span class="badge bg-success">Готово</span>
@@ -272,7 +270,7 @@
             <div id="settings">
                 <div class="card mb-4">
                     <div class="card-header bg-primary text-white">
-                        <h3 class="mb-0"><i class="fas fa-cog me-2"></i> Настройки</h3>
+                        <h3 class="mb-0"><i class="fas fa-cog me-2"></i> Настройки (Демонстрационный блок)</h3>
                     </div>
                     <div class="card-body">
                         <form>

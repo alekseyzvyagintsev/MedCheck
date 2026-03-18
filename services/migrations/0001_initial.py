@@ -171,7 +171,6 @@ class Migration(migrations.Migration):
                 "ordering": ["-uploaded_at"],
             },
         ),
-
         migrations.CreateModel(
             name="Service",
             fields=[

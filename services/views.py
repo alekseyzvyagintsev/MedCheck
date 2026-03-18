@@ -28,14 +28,10 @@ def diagnosis_result_detail(request, appointment_id):
     """
     # Получаем результат диагностики через связь с записью на прием
     result = DiagnosisResult.objects.select_related(
-        'appointment__patient',
-        'appointment__service',
-        'appointment__doctor'
+        "appointment__patient", "appointment__service", "appointment__doctor"
     ).get(appointment__id=appointment_id, appointment__patient=request.user)
 
-    return render(request, 'services/diagnosis_result_detail.html', {
-        'result': result
-    })
+    return render(request, "services/diagnosis_result_detail.html", {"result": result})
 
 
 def category_list(request):
@@ -259,6 +255,13 @@ def create_appointment(request):
         doctor_id = data.get("doctor_id")
         scheduled_at = data.get("scheduled_at")
 
+        # Парсим дату и время, если получили строку
+        if isinstance(scheduled_at, str):
+            try:
+                scheduled_at = parse_datetime_string(scheduled_at)
+            except ValueError as e:
+                return JsonResponse({"error": str(e)}, status=400)
+
         # Вызываем бизнес-логику создания записи
         success, result = create_appointment_logic(
             patient=request.user,
@@ -344,15 +347,19 @@ def doctor_dashboard(request):
     today = date.today()
 
     # Получаем записи на сегодня для этого врача
-    today_appointments = Appointment.objects.filter(
-        doctor=request.user,
-        scheduled_at__date=today,
-        is_active=True
-    ).select_related('patient', 'service').order_by('scheduled_at')
+    today_appointments = (
+        Appointment.objects.filter(
+            doctor=request.user, scheduled_at__date=today, is_active=True
+        )
+        .select_related("patient", "service")
+        .order_by("scheduled_at")
+    )
 
-    return render(request, 'services/doctor/dashboard.html', {
-        'today_appointments': today_appointments
-    })
+    return render(
+        request,
+        "services/doctor/dashboard.html",
+        {"today_appointments": today_appointments},
+    )
 
 
 @login_required
@@ -366,17 +373,22 @@ def create_diagnosis_result(request, appointment_id):
 
     # Получаем запись на приём
     appointment = get_object_or_404(
-        Appointment.objects.select_related('patient', 'doctor', 'service'),
+        Appointment.objects.select_related("patient", "doctor", "service"),
         id=appointment_id,
-        doctor=request.user
+        doctor=request.user,
     )
 
     # Проверяем, существует ли уже результат для этой записи
-    if hasattr(appointment, 'diagnosis_results') and appointment.diagnosis_results.exists():
-        messages.warning(request, "Результат обследования для этой записи уже существует")
-        return redirect('services:view_result', appointment_id=appointment_id)
+    if (
+        hasattr(appointment, "diagnosis_results")
+        and appointment.diagnosis_results.exists()
+    ):
+        messages.warning(
+            request, "Результат обследования для этой записи уже существует"
+        )
+        return redirect("services:view_result", appointment_id=appointment_id)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = DiagnosisResultForm(request.POST, request.FILES)
         if form.is_valid():
             # Создаем результат диагностики
@@ -385,15 +397,19 @@ def create_diagnosis_result(request, appointment_id):
             diagnosis_result.save()
 
             messages.success(request, "Результат обследования успешно создан")
-            return redirect('services:view_result', appointment_id=appointment_id)
+            return redirect("services:view_result", appointment_id=appointment_id)
     else:
         form = DiagnosisResultForm()
 
-    return render(request, 'services/doctor/result_form.html', {
-        'form': form,
-        'title': f'Создание результата для {appointment.patient.get_full_name() or appointment.patient.username}',
-        'appointment': appointment
-    })
+    return render(
+        request,
+        "services/doctor/result_form.html",
+        {
+            "form": form,
+            "title": f"Создание результата для {appointment.patient.get_full_name() or appointment.patient.username}",
+            "appointment": appointment,
+        },
+    )
 
 
 @login_required
@@ -404,22 +420,22 @@ def view_diagnosis_result(request, appointment_id):
     # Получаем результат диагностики
     diagnosis_result = get_object_or_404(
         DiagnosisResult.objects.select_related(
-            'appointment__patient',
-            'appointment__doctor',
-            'appointment__service'
+            "appointment__patient", "appointment__doctor", "appointment__service"
         ),
-        appointment__id=appointment_id
+        appointment__id=appointment_id,
     )
 
     # Проверяем права доступа: врач может просматривать только свои результаты,
     # админ может просматривать все
-    if (diagnosis_result.appointment.doctor != request.user
-            and not request.user.is_superuser):
+    if (
+        diagnosis_result.appointment.doctor != request.user
+        and not request.user.is_superuser
+    ):
         raise PermissionDenied("У вас нет прав для просмотра этого результата")
 
-    return render(request, 'services/doctor/result_detail.html', {
-        'result': diagnosis_result
-    })
+    return render(
+        request, "services/doctor/result_detail.html", {"result": diagnosis_result}
+    )
 
 
 @login_required
@@ -429,29 +445,39 @@ def edit_diagnosis_result(request, appointment_id):
     """
     # Получаем результат диагностики
     diagnosis_result = get_object_or_404(
-        DiagnosisResult.objects.select_related('appointment__doctor'),
-        appointment__id=appointment_id
+        DiagnosisResult.objects.select_related("appointment__doctor"),
+        appointment__id=appointment_id,
     )
 
     # Проверяем права доступа: только владелец (врач) или админ может редактировать
-    if (diagnosis_result.appointment.doctor != request.user
-            and not request.user.is_superuser):
+    if (
+        diagnosis_result.appointment.doctor != request.user
+        and not request.user.is_superuser
+    ):
         raise PermissionDenied("У вас нет прав для редактирования этого результата")
 
-    if request.method == 'POST':
-        form = DiagnosisResultForm(request.POST, request.FILES, instance=diagnosis_result)
+    if request.method == "POST":
+        form = DiagnosisResultForm(
+            request.POST, request.FILES, instance=diagnosis_result
+        )
         if form.is_valid():
             form.save()
             messages.success(request, "Результат обследования успешно обновлен")
-            return redirect('services:view_result', appointment_id=appointment_id)
+            return redirect("services:view_result", appointment_id=appointment_id)
     else:
         form = DiagnosisResultForm(instance=diagnosis_result)
 
-    return render(request, 'services/doctor/result_form.html', {
-        'form': form,
-        'title': f'Редактирование результата для {diagnosis_result.appointment.patient.get_full_name() or diagnosis_result.appointment.patient.username}',
-        'appointment': diagnosis_result.appointment
-    })
+    return render(
+        request,
+        "services/doctor/result_form.html",
+        {
+            "form": form,
+            "title": f"""Редактирование результата для {diagnosis_result.appointment.patient.get_full_name()
+                                                        or diagnosis_result.appointment.patient.username}""",
+            "appointment": diagnosis_result.appointment,
+            "result": diagnosis_result,
+        },
+    )
 
 
 @login_required
@@ -461,18 +487,19 @@ def delete_diagnosis_result(request, appointment_id):
     """
     # Получаем результат диагностики
     diagnosis_result = get_object_or_404(
-        DiagnosisResult.objects.select_related('appointment__doctor'),
-        appointment__id=appointment_id
+        DiagnosisResult.objects.select_related("appointment__doctor"),
+        appointment__id=appointment_id,
     )
 
     # Проверяем права доступа: только владелец (врач) или админ может удалить
-    if (diagnosis_result.appointment.doctor != request.user
-            and not request.user.is_superuser):
+    if (
+        diagnosis_result.appointment.doctor != request.user
+        and not request.user.is_superuser
+    ):
         raise PermissionDenied("У вас нет прав для удаления этого результата")
 
-    if request.method == 'POST':
+    if request.method == "POST":
         diagnosis_result.delete()
         messages.success(request, "Результат обследования успешно удален")
 
-    return redirect('services:dashboard')
-
+    return redirect("services:dashboard")

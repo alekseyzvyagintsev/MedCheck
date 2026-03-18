@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from services.models import ServiceCategory
@@ -9,7 +8,11 @@ def home(request):
     Главная страница
     """
     categories = ServiceCategory.objects.all()
-    return render(request, "main/home.html", {"categories": categories})
+    return render(
+        request,
+        "main/home.html",
+        {"categories": categories, "category_list_url": "services:category_list"},
+    )
 
 
 def about(request):

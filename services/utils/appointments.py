@@ -66,16 +66,20 @@ def create_appointment_logic(patient, service_id, doctor_id, scheduled_at):
         if scheduled_at <= timezone.now():
             return False, {"error": "Нельзя записаться на прошедшее время и дату"}
 
+        # Преобразуем scheduled_at в строку для сравнения
+        if isinstance(scheduled_at, str):
+            try:
+                scheduled_at = parse_datetime_string(scheduled_at)
+            except ValueError as e:
+                return False, {"error": str(e)}
+
         # Создаём запись
         appointment = Appointment.objects.create(
             patient=patient,
             service=service,
             doctor=doctor,
             scheduled_at=scheduled_at,
-
         )
-
-
 
         return True, {
             "success": True,
@@ -117,8 +121,6 @@ def delete_appointment_logic(appointment_id, user):
         appointment.is_active = False
         appointment.status = "cancelled"
         appointment.save()
-
-
 
         return True, {"success": True, "message": "Запись успешно отменена!"}
 

@@ -6,7 +6,7 @@
     <div class="container">
         <h1 class="display-4 fw-bold mb-4 fade-in">Современная медицинская диагностика</h1>
         <p class="lead mb-5 fade-in">Точная диагностика для вашего здоровья и благополучия</p>
-        <a href="{% url 'services:category-list' %}" class="btn btn-light btn-lg px-5 py-3 me-3 fade-in">Наши услуги</a>
+        <a href="{% url 'services:category_list' %}" class="btn btn-light btn-lg px-5 py-3 me-3 fade-in">Наши услуги</a>
         <a href="{% url 'accounts:register' %}" class="btn btn-outline-light btn-lg px-5 py-3 fade-in">Записаться на прием</a>
     </div>
 </section>
@@ -43,7 +43,7 @@
                         {% endwith %}
                         <h3>{{ category.name }}</h3>
                         <p>{{ category.description }}</p>
-                        <a href="{% url 'services:category-services' category.id %}" class="btn btn-primary">Подробнее</a>
+                        <a href="{% url 'services:category_services' category.id %}" class="btn btn-primary">Подробнее</a>
                     </div>
                 </div>
             </div>

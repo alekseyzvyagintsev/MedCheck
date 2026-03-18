@@ -5,7 +5,6 @@
 from typing import Any, Dict, Optional
 
 from django.core.files.uploadedfile import UploadedFile
-from django.utils import timezone
 
 from services.models import Appointment, DiagnosisResult
 
@@ -23,18 +22,6 @@ def create_diagnostic_result(appointment: Appointment) -> DiagnosisResult:
     diagnostic_result = DiagnosisResult.objects.create(
         appointment=appointment, status="processing", description=""
     )
-
-    # Формируем данные для уведомления
-    appointment_data = {
-        "patient_first_name": appointment.patient.first_name,
-        "patient_last_name": appointment.patient.last_name,
-        "service_name": appointment.service.name,
-        "doctor_full_name": f"{appointment.doctor.first_name} {appointment.doctor.last_name}",
-        "scheduled_at": appointment.scheduled_at.strftime("%d.%m.%Y %H:%M"),
-        "duration": appointment.service.duration,
-        "dashboard_url": "/dashboard/",
-        "current_year": timezone.now().year,
-    }
 
     return diagnostic_result
 
@@ -85,31 +72,5 @@ def update_diagnostic_result(
     # Деактивируем запись на прием
     appointment.is_active = False
     appointment.save()
-
-    # Формируем данные для уведомления
-    appointment_data = {
-        "patient_first_name": appointment.patient.first_name,
-        "patient_last_name": appointment.patient.last_name,
-        "service_name": appointment.service.name,
-        "doctor_full_name": f"{appointment.doctor.first_name} {appointment.doctor.last_name}",
-        "scheduled_at": appointment.scheduled_at.strftime("%d.%m.%Y %H:%M"),
-        "duration": appointment.service.duration,
-        "dashboard_url": "/dashboard/",
-        "current_year": timezone.now().year,
-        "diagnostic_files": [],
-        "description": description,
-    }
-
-    # Добавляем информацию о файлах, если они есть
-    if files:
-        for file in files:
-            if isinstance(file, UploadedFile):
-                appointment_data["diagnostic_files"].append(
-                    {
-                        "name": file.name,
-                        "size": f"{file.size // 1024} КБ" if file.size else "0 КБ",
-                        "url": f"/media/{file.name}",
-                    }
-                )
 
     return {"success": True, "diagnostic_result_id": diagnostic_result.id}

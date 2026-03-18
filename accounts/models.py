@@ -36,6 +36,7 @@ class User(AbstractUser):
             # Импортируем внутри функции для избежания циклического импорта
             from services.utils.doctors import (assign_doctor_group,
                                                 create_doctor_schedule)
+
             assign_doctor_group(self)
             create_doctor_schedule(self)
 

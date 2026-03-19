@@ -42,3 +42,8 @@ class User(AbstractUser):
 
             # Обновляем пользователя после добавления в группу
             self.refresh_from_db()
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+        ordering = ("-username",)

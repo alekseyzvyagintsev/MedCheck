@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from content.content import get_common_context
 from services.models import ServiceCategory
 
 
@@ -8,10 +9,18 @@ def home(request):
     Главная страница
     """
     categories = ServiceCategory.objects.all()
+
+    context = get_common_context()
+    context = {
+        **context,
+        "categories": categories,
+        "category_list_url": "services:category_list",
+    }
+
     return render(
         request,
         "main/home.html",
-        {"categories": categories, "category_list_url": "services:category_list"},
+        context,
     )
 
 
@@ -19,11 +28,21 @@ def about(request):
     """
     Страница "О компании"
     """
-    return render(request, "main/about.html")
+    context = get_common_context()
+    return render(
+        request,
+        "main/about.html",
+        context,
+    )
 
 
 def contact(request):
     """
     Страница контактов
     """
-    return render(request, "main/contact.html")
+    context = get_common_context()
+    return render(
+        request,
+        "main/contact.html",
+        context,
+    )

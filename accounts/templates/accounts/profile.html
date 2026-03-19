@@ -170,7 +170,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Записи на прием -->
             <div id="appointments" class="mb-5">
                 <div class="card mb-4">
@@ -189,9 +189,9 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <h5>{{ appointment.service.name }}</h5>
-                                            
+
                                             <p class="text-muted mb-1">{{ appointment.doctor.get_full_name }}</p>
-                                            
+
                                             <p class="text-muted mb-0"><i class="far fa-calendar-alt me-1"></i> {{ appointment.scheduled_at|date:"d F Y" }} - <i class="far fa-clock me-1"></i> {{ appointment.scheduled_at|date:"H:i" }}</p>
                                         </div>
                                         <div class="btn-group">
@@ -206,12 +206,12 @@
                         {% else %}
                             <p class="text-muted">У вас нет активных записей на прием.</p>
                         {% endif %}
-                        
+
 
                     </div>
                 </div>
             </div>
-            
+
             <!-- Результаты диагностики -->
             <div id="results" class="mb-5">
                 <div class="card mb-4">
@@ -265,7 +265,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Настройки -->
             <div id="settings">
                 <div class="card mb-4">

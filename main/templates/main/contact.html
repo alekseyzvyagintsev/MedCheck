@@ -14,41 +14,36 @@
             <div class="contact-info">
                 <h2>Наши контакты</h2>
                 
-                <div class="contact-info-item">
-                    <i class="fas fa-map-marker-alt contact-info-icon"></i>
-                    <strong>Адрес:</strong>
-                    <p>123456, г. Санкт-Петербург, ул. Медицинская, д. 1<br>
-                    Бизнес-центр "Медикал Холл", 1-й этаж</p>
-                </div>
-                
-                <div class="contact-info-item">
-                    <i class="fas fa-phone contact-info-icon"></i>
-                    <strong>Телефоны:</strong>
-                    <p><strong>Справочная:</strong> +7 (812) 123-45-67<br>
-                    <strong>Запись на прием:</strong> +7 (812) 123-45-68<br>
-                    <strong>Экстренные случаи:</strong> +7 (812) 123-45-69</p>
-                </div>
-                
-                <div class="contact-info-item">
-                    <i class="fas fa-envelope contact-info-icon"></i>
-                    <strong>Email:</strong>
-                    <p><strong>Общие вопросы:</strong> info@medcheck.ru<br>
-                    <strong>Рекламации:</strong> complaints@medcheck.ru<br>
-                    <strong>Сотрудничество:</strong> partner@medcheck.ru</p>
-                </div>
-                
-                <div class="contact-info-item">
-                    <i class="fas fa-clock contact-info-icon"></i>
-                    <strong>Часы работы:</strong>
-                    <p><strong>Прием пациентов:</strong> Пн-Пт: 8:00-20:00, Сб-Вс: 9:00-18:00<br>
-                    <strong>Лаборатория:</strong> Пн-Пт: 7:00-14:00, Сб: 8:00-12:00<br>
-                    <strong>Выдача результатов:</strong> Пн-Пт: 9:00-19:00, Сб-Вс: 9:00-17:00</p>
-                </div>
-                
-                <div class="contact-info-item">
-                    <i class="fas fa-credit-card contact-info-icon"></i>
-                    <strong>Оплата:</strong>
-                    <p>Принимаем к оплате банковские карты, наличные, а также работаем с медицинскими страховками (ДМС).</p>
+                <div class="contact-info">
+                    <div class="contact-info-item">
+                        <i class="fas fa-map-marker-alt contact-info-icon"></i>
+                        <strong>{{ address.title }}</strong>
+                        <p>{{ address.content }}</p>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="fas fa-phone contact-info-icon"></i>
+                        <strong>{{ phones.title }}</strong>
+                        <p>{{ phones.content|linebreaks }}</p>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope contact-info-icon"></i>
+                        <strong>{{ email.title }}</strong>
+                        <p>{{ email.content|linebreaks }}</p>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="fas fa-clock contact-info-icon"></i>
+                        <strong>{{ opening.title }}</strong>
+                        <p>{{ opening.content|linebreaks }}</p>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <i class="fas fa-credit-card contact-info-icon"></i>
+                        <strong>{{ payment.title }}</strong>
+                        <p>{{ payment.content|linebreaks }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -120,13 +115,8 @@
     <div class="row mt-5">
         <div class="col-12">
             <div class="alert alert-info">
-                <h4><i class="fas fa-info-circle"></i> Полезная информация</h4>
-                <ul>
-                    <li>Пациентам рекомендуется приходить за 15 минут до назначенного времени</li>
-                    <li>Для лабораторных исследований необходимо приходить натощак</li>
-                    <li>При себе необходимо иметь паспорт и медицинский полис</li>
-                    <li>Для первичного приема желательно иметь на руках предыдущие результаты обследований</li>
-                </ul>
+                <h4><i class="fas fa-info-circle"></i> {{ useful_info.title }}</h4>
+                <ul>{{ useful_info.content|linebreaks }}</ul>
             </div>
         </div>
     </div>

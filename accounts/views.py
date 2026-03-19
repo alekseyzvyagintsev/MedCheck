@@ -6,6 +6,7 @@ from django.http import Http404
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
+from content.content import get_common_context
 from services.models import Appointment, DiagnosisResult
 
 from .forms import UserProfileForm, UserRegistrationForm
@@ -32,7 +33,10 @@ def register(request):
     else:
         form = UserRegistrationForm()
 
-    return render(request, "accounts/register.html", {"form": form})
+    context = get_common_context()
+    context = {**context, "form": form}
+
+    return render(request, "accounts/register.html", context)
 
 
 @login_required
@@ -40,8 +44,6 @@ def profile(request):
     """
     Просмотр и редактирование профиля
     """
-    # Проверяем, может ли пользователь просматривать этот профиль
-    # Убрал проверку, так как она была некорректной (всегда возвращает False)
 
     if request.method == "POST":
         form = UserProfileForm(request.POST, request.FILES, instance=request.user)
@@ -64,14 +66,17 @@ def profile(request):
         .order_by("-uploaded_at")
     )
 
+    context = get_common_context()
+    context = {
+        **context,
+        "active_appointments": active_appointments,
+        "diagnosis_results": diagnosis_results,
+        "form": form,
+    }
     return render(
         request,
         "accounts/profile.html",
-        {
-            "form": form,
-            "active_appointments": active_appointments,
-            "diagnosis_results": diagnosis_results,
-        },
+        context,
     )
 
 
@@ -97,7 +102,10 @@ def create_doctor(request):
     else:
         form = UserRegistrationForm()
 
-    return render(request, "accounts/create_doctor.html", {"form": form})
+    context = get_common_context()
+    context = {**context, "form": form}
+
+    return render(request, "accounts/create_doctor.html", context)
 
 
 # Используем встроенные представления Django для входа и выхода

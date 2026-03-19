@@ -14,14 +14,21 @@
 <!-- О компании кратко -->
 <section class="container my-5">
     <div class="row align-items-center">
-        <div class="col-md-6">
-            <h2>О компании MedCheck</h2>
-            <p>Наша медицинская диагностическая компания предоставляет широкий спектр услуг по выявлению и профилактике различных заболеваний. Мы используем современное оборудование и передовые методы диагностики, чтобы обеспечить точные и надежные результаты.</p>
-            <p>Наша команда состоит из высококвалифицированных специалистов с многолетним опытом работы в области медицины. Мы стремимся к тому, чтобы каждый пациент чувствовал себя в безопасности и получал индивидуальный подход.</p>
-            <a href="{% url 'main:about' %}" class="btn btn-primary mt-3">Узнать больше</a>
-        </div>
-        <div class="col-md-6">
-            <img src="/media/service_images/Клиника.png" alt="MedCheck Clinic" class="img-fluid rounded shadow">
+        <div class="col-md-12 col-lg-12 mb-4">
+            <div class="service-card h-100 row">
+                <div class="service-card-body col-md-6">
+                    <h2>{{ description.title }}</h2>
+                    <p>{{ description.content|linebreaks }}</p>
+                    <a href="{% url 'main:about' %}" class="btn btn-primary mt-3">Узнать больше</a>
+                </div>
+                <div class="service-card-body col-md-6">
+                    {% if description.image %}
+                        <img src="{{ description.image.url }}" alt="{{ description.description }}" class="img-fluid rounded shadow" style="max-height: 350px;">
+                    {% else %}
+                        <img src="/media/user_images/base_image.png" alt="Фото профиля" class="rounded-circle img-fluid shadow" style="max-height: 250px;">
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -54,30 +61,34 @@
 
 <!-- Контакты -->
 <section class="container my-5">
-    <div class="row">
-        <div class="col-md-6">
+    <div class="service-card h-100 row">
+        <div class="service-card-body col-md-6">
             <h2>Свяжитесь с нами</h2>
             <p>Готовы записаться на прием или хотите получить консультацию? Свяжитесь с нами любым удобным способом.</p>
             <div class="contact-info">
                 <div class="contact-info-item">
                     <i class="fas fa-map-marker-alt contact-info-icon"></i>
-                    <strong>Адрес:</strong> г. Санкт_Петербург, ул. Медицинская, 1
+                    <strong>{{ address.title }}</strong>
+                    <p>{{ address.content }}</p>
                 </div>
                 <div class="contact-info-item">
                     <i class="fas fa-phone contact-info-icon"></i>
-                    <strong>Телефон:</strong> +7 (812) 123-45-67
+                    <strong>{{ phones.title }}</strong>
+                    <p>{{ phones.content|linebreaks }}</p>
                 </div>
                 <div class="contact-info-item">
                     <i class="fas fa-envelope contact-info-icon"></i>
-                    <strong>Email:</strong> info@medcheck.ru
+                    <strong>{{ email.title }}</strong>
+                    <p>{{ email.content|linebreaks }}</p>
                 </div>
                 <div class="contact-info-item">
                     <i class="fas fa-clock contact-info-icon"></i>
-                    <strong>Часы работы:</strong> Пн-Пт: 8:00-20:00, Сб-Вс: 9:00-18:00
+                    <strong>{{ opening.title }}</strong>
+                    <p>{{ opening.content|linebreaks }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="service-card-body col-md-6">
             <h2>Форма обратной связи</h2>
             <form>
                 <div class="mb-3">

@@ -332,7 +332,7 @@ docker-compose up --build
 
 ## Автор и поддержка
 
-**Разработчик**: Alexey
+**Разработчик**: Alexey Zvyagintsev
 **Email**: alex0236889@gmail.com
 **GitHub**: https://github.com/alekseyzvyagintsev/MedCheck
 

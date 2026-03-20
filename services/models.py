@@ -220,13 +220,13 @@ class Appointment(models.Model):
             doctor=doctor, day_of_week=day_of_week, is_active=True
         ).order_by("time_of_day")
 
-        # Получаем все уже занятые слоты на эту дату
+        # Получаем все уже занятые слоты на эту дату — сразу как список datetime
         booked_slots = cls.objects.filter(
             doctor=doctor, scheduled_at__date=date, is_active=True
         ).values_list("scheduled_at", flat=True)
 
-        # Преобразуем занятые слоты в datetime объекты для сравнения
-        booked_datetimes = [slot for slot in booked_slots]
+        # преобразуем его в обычный список для удобства (не обязательно, но безопасно)
+        booked_datetimes = list(booked_slots)
 
         available_slots = []
         for slot in schedule_slots:

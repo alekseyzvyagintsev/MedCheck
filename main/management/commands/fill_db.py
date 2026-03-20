@@ -11,31 +11,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         user_model = get_user_model()
 
-        # Создаем пользователей
-        admin, created = user_model.objects.get_or_create(
-            username="admin", defaults={"is_staff": True, "is_superuser": True}
-        )
-        if created:
-            admin.set_password("admin")
-            admin.save()
-            self.stdout.write(self.style.SUCCESS("Создан суперпользователь admin"))
-
-        manager, created = user_model.objects.get_or_create(
-            username="manager", defaults={"is_staff": True, "is_superuser": False}
-        )
-        if created:
-            manager.set_password("manager")
-            manager.save()
-            self.stdout.write(self.style.SUCCESS("Создан пользователь manager"))
-
-        user, created = user_model.objects.get_or_create(
-            username="user", defaults={"is_staff": False, "is_superuser": False}
-        )
-        if created:
-            user.set_password("user")
-            user.save()
-            self.stdout.write(self.style.SUCCESS("Создан пользователь user"))
-
         # Создаем категории услуг
         categories_data = [
             {

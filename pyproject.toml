@@ -5,6 +5,7 @@ description = ""
 authors = ["Aleksey Zvyagintsev <alex0236889@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+package-mode = false
 packages = [{include = "MedCheck"}]
 
 [tool.poetry.dependencies]

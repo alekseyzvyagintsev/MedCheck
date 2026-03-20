@@ -1,23 +1,28 @@
-FROM python:3.12
+FROM python:3.12-slim
 
-WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
+WORKDIR /code
+
+# Установка системных зависимностей
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends postgresql-client && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y \
+        gcc \
+        libpq-dev \
+        postgresql-client \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY pyproject.toml poetry.lock ./
+# Установка Poetry
+RUN pip install poetry==2.3.1
 
-RUN pip install --upgrade pip && \
-    pip install "poetry==1.7.1" && \
-    poetry config virtualenvs.create false && \
-    poetry export -f requirements.txt --output requirements.txt && \
-    pip install -r requirements.txt
+# Копируем и устанавливаем зависимости
+COPY pyproject.toml poetry.lock README.md ./
+RUN poetry config virtualenvs.create false && \
+    poetry install --only=main --no-interaction --no-ansi
 
+# Копируем код
 COPY . .
 
-RUN mkdir -p /app/staticfiles
-
 EXPOSE 8000
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

@@ -15,6 +15,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # Режим отладки
 DEBUG = True if os.getenv("DEBUG") == "True" else False
 
+# Флаг: работаем ли в Docker?
+IN_DOCKER = os.getenv("IN_DOCKER", "False").lower() in ("true", "1", "on", "yes")
 
 # Домены, которые будут использоваться
 ALLOWED_HOSTS = ["*"]
@@ -68,11 +70,11 @@ WSGI_APPLICATION = "MedCheck.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT", default=5432),
+        "NAME": os.getenv("DB_NAME", "medcheck"),
+        "USER": os.getenv("DB_USER", "postgres"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "postgres"),
+        "HOST": "db" if IN_DOCKER else "localhost",
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
 

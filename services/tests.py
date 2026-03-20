@@ -268,6 +268,7 @@ class ServicesViewsTest(TestCase):
         diagnosis_result = DiagnosisResult.objects.create(
             appointment=appointment, status="completed"
         )
+        print(diagnosis_result)
         response = self.client.get(
             reverse("services:view_result", kwargs={"appointment_id": appointment.id})
         )
@@ -286,6 +287,7 @@ class ServicesViewsTest(TestCase):
         diagnosis_result = DiagnosisResult.objects.create(
             appointment=appointment, status="completed"
         )
+        print(diagnosis_result)
         response = self.client.get(
             reverse("services:edit_result", kwargs={"appointment_id": appointment.id})
         )
@@ -306,6 +308,7 @@ class ServicesViewsTest(TestCase):
         diagnosis_result = DiagnosisResult.objects.create(
             appointment=appointment, status="completed"
         )
+        print(diagnosis_result)
         response = self.client.post(
             reverse("services:delete_result", kwargs={"appointment_id": appointment.id})
         )

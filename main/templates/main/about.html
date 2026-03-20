@@ -4,22 +4,30 @@
 <!-- О компании -->
 <section class="container my-5">
     <div class="text-center mb-5">
-        <h1>О компании MedCheck</h1>
-        <p class="lead">Мы заботимся о вашем здоровье с 2010 года</p>
+        <h1>{{ description_big.title }}</h1>
+        <p class="lead">{{ basement_label.content|linebreaks }}</p>
     </div>
 
     <!-- История компании -->
-    <div class="row mb-5">
-        <div class="col-md-6">
-            <img src="/media/service_images/Инструментальная.jpg" alt="История компании" class="img-fluid rounded shadow">
+    <section class="container my-5">
+        <div class="row align-items-center">
+            <div class="col-md-12 col-lg-12 mb-4">
+                <div class="service-card h-100 row">
+                    <div class="service-card-body col-md-6">
+                        {% if description_big.image %}
+                            <img src="{{ description_big.image.url }}" alt="{{ description_big.description }}" class="rounded-circle img-fluid shadow" style="max-height: 350px;">
+                        {% else %}
+                            <img src="/media/user_images/base_image.png" alt="Фото профиля" class="rounded-circle img-fluid shadow" style="max-height: 250px;">
+                        {% endif %}
+                    </div>
+                    <div class="service-card-body col-md-6">
+                        <h2>{{ description_big.title }}</h2>
+                        <p>{{ description_big.content|linebreaks }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <h2>Наша история</h2>
-            <p>Компания MedCheck была основана в 2010 году группой врачей с миссией предоставить доступную и качественную медицинскую диагностику каждому пациенту.</p>
-            <p>За более чем 15 лет работы мы провели более 100 000 диагностических процедур и помогли тысячам пациентов вовремя выявить заболевания и начать эффективное лечение.</p>
-            <p>Сегодня мы являемся одной из ведущих диагностических клиник в Санкт_Петербурге, оснащенной самым современным оборудованием и штатом высококвалифицированных специалистов.</p>
-        </div>
-    </div>
+    </section>
 
     <!-- Миссия и ценности -->
     <div class="row mb-5">
@@ -29,22 +37,22 @@
                 <div class="col-md-4 text-center">
                     <div class="p-4 bg-light rounded h-100">
                         <i class="fas fa-heart fa-3x mb-3" style="color: var(--primary-color);"></i>
-                        <h3>Забота о пациенте</h3>
-                        <p>Мы ставим интересы и здоровье наших пациентов на первое место во всех аспектах нашей работы.</p>
+                        <h3>{{ patient_care.title }}</h3>
+                        <p>{{ patient_care.content|linebreaks }}</p>
                     </div>
                 </div>
                 <div class="col-md-4 text-center">
                     <div class="p-4 bg-light rounded h-100">
                         <i class="fas fa-stethoscope fa-3x mb-3" style="color: var(--primary-color);"></i>
-                        <h3>Профессионализм</h3>
-                        <p>Наши специалисты постоянно совершенствуют свои знания и навыки, используя только проверенные методы диагностики.</p>
+                        <h3>{{ professionalism.title }}</h3>
+                        <p>{{ professionalism.content|linebreaks }}</p>
                     </div>
                 </div>
                 <div class="col-md-4 text-center">
                     <div class="p-4 bg-light rounded h-100">
                         <i class="fas fa-microscope fa-3x mb-3" style="color: var(--primary-color);"></i>
-                        <h3>Точность</h3>
-                        <p>Мы используем современное оборудование и строгие протоколы для обеспечения максимально точных результатов диагностики.</p>
+                        <h3>{{ accuracy.title }}</h3>
+                        <p>{{ accuracy.content|linebreaks }}</p>
                     </div>
                 </div>
             </div>
@@ -58,26 +66,38 @@
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <div class="doctor-card">
-                        <img src="/media/service_images/IvanovAS.png" alt="Иванов А.Н." class="doctor-img">
-                        <h3>Иванов Андрей Серафимович</h3>
-                        <p class="doctor-specialty">Главный врач, терапевт</p>
-                        <p>Более 15 лет опыта работы в области терапии и диагностики. Специалист по комплексной диагностике.</p>
+                        {% if chief_medic.image %}
+                            <img src="{{ chief_medic.image.url }}" alt="{{ chief_medic.description }}" class="rounded-circle img-fluid shadow" style="max-height: 350px;">
+                        {% else %}
+                            <img src="/media/user_images/base_image.png" alt="Фото профиля" class="rounded-circle img-fluid shadow" style="max-height: 250px;">
+                        {% endif %}
+                        <h3>{{ chief_medic.description }}</h3>
+                        <p class="doctor-specialty">{{ chief_medic.title }}</p>
+                        <p>{{ chief_medic.content|linebreaks }}</p>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="doctor-card">
-                        <img src="/media/service_images/PetrovaEN.webp" alt="Петрова Е.Н." class="doctor-img">
-                        <h3>Петрова Екатерина Николаевна</h3>
-                        <p class="doctor-specialty">Кардиолог</p>
-                        <p>Эксперт в области сердечно-сосудистых заболеваний. Проводит углубленную диагностику и составляет индивидуальные планы лечения.</p>
+                        {% if senior_nurse.image %}
+                            <img src="{{ senior_nurse.image.url }}" alt="{{ senior_nurse.description }}" class="rounded-circle img-fluid shadow" style="max-height: 350px;">
+                        {% else %}
+                            <img src="/media/user_images/base_image.png" alt="Фото профиля" class="rounded-circle img-fluid shadow" style="max-height: 250px;">
+                        {% endif %}
+                        <h3>{{ senior_nurse.description }}</h3>
+                        <p class="doctor-specialty">{{ senior_nurse.title }}</p>
+                        <p>{{ senior_nurse.content|linebreaks }}</p>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="doctor-card">
-                        <img src="/media/service_images/SidorovVK.webp" alt="Сидоров В.К." class="doctor-img">
-                        <h3>Сидоров Владимир Константинович</h3>
-                        <p class="doctor-specialty">Невролог</p>
-                        <p>Специалист по диагностике заболеваний нервной системы. Использует современные методы нейродиагностики.</p>
+                        {% if chief_surgery.image %}
+                            <img src="{{ chief_surgery.image.url }}" alt="{{ chief_surgery.description }}" class="rounded-circle img-fluid shadow" style="max-height: 350px;">
+                        {% else %}
+                            <img src="/media/user_images/base_image.png" alt="Фото профиля" class="rounded-circle img-fluid shadow" style="max-height: 250px;">
+                        {% endif %}
+                        <h3>{{ chief_surgery.description }}</h3>
+                        <p class="doctor-specialty">{{ chief_surgery.title }}</p>
+                        <p>{{ chief_surgery.content|linebreaks }}</p>
                     </div>
                 </div>
             </div>

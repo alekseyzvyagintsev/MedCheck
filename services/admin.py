@@ -35,9 +35,6 @@ class AppointmentAdmin(admin.ModelAdmin):
     list_filter = ("scheduled_at",)
 
 
-
-
-
 @admin.register(DiagnosisResult)
 class DiagnosisResultAdmin(admin.ModelAdmin):
     list_display = (

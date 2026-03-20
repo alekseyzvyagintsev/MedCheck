@@ -93,9 +93,13 @@
                     
                     <!-- Кнопки действий -->
                     <div class="d-grid gap-2">
-                        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#appointmentModal">
+                        <a href="{% url 'services:choose_service' %}?service_id={{ service.id }}" class="btn btn-primary btn-lg" onclick="event.preventDefault(); document.getElementById('service_id').value={{ service.id }}; document.getElementById('service-form').submit();">
                             <i class="fas fa-calendar-check"></i> Записаться на прием
-                        </button>
+                        </a>
+                        <form id="service-form" method="post" action="{% url 'services:choose_service' %}" style="display: none;">
+                            {% csrf_token %}
+                            <input type="hidden" name="service_id" id="service_id" value="">
+                        </form>
                         <a href="{% url 'main:contact' %}" class="btn btn-outline-primary btn-lg">
                             <i class="fas fa-envelope"></i> Задать вопрос
                         </a>

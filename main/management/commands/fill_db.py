@@ -11,31 +11,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         user_model = get_user_model()
 
-        # Создаем пользователей
-        admin, created = user_model.objects.get_or_create(
-            username="admin", defaults={"is_staff": True, "is_superuser": True}
-        )
-        if created:
-            admin.set_password("admin")
-            admin.save()
-            self.stdout.write(self.style.SUCCESS("Создан суперпользователь admin"))
-
-        manager, created = user_model.objects.get_or_create(
-            username="manager", defaults={"is_staff": True, "is_superuser": False}
-        )
-        if created:
-            manager.set_password("manager")
-            manager.save()
-            self.stdout.write(self.style.SUCCESS("Создан пользователь manager"))
-
-        user, created = user_model.objects.get_or_create(
-            username="user", defaults={"is_staff": False, "is_superuser": False}
-        )
-        if created:
-            user.set_password("user")
-            user.save()
-            self.stdout.write(self.style.SUCCESS("Создан пользователь user"))
-
         # Создаем категории услуг
         categories_data = [
             {
@@ -100,7 +75,9 @@ class Command(BaseCommand):
             {
                 "name": "Ультразвуковое исследование (УЗИ) органов брюшной полости",
                 "category": "Диагностика",
-                "description": "Ультразвуковое исследование печени, желчного пузыря, поджелудочной железы, селезенки и почек.",
+                "description": """
+                Ультразвуковое исследование печени, желчного пузыря, поджелудочной железы, селезенки и почек.
+                """,
                 "short_description": "УЗИ органов брюшной полости.",
                 "price": 3500,
                 "duration": 30,
@@ -124,13 +101,18 @@ class Command(BaseCommand):
                 "short_description": "ЭКГ сердца.",
                 "price": 2200,
                 "duration": 10,
-                "preparation": "Рекомендуется прийти в спокойном состоянии, избегать физических нагрузок перед исследованием.",
+                "preparation": """
+                Рекомендуется прийти в спокойном состоянии, избегать физических нагрузок перед исследованием.
+                """,
                 "results_time": "Результаты готовы сразу после исследования",
             },
             {
                 "name": "Общий анализ крови",
                 "category": "Лаборатория",
-                "description": "Исследование крови, включающее определение количества эритроцитов, лейкоцитов, гемоглобина и других показателей.",
+                "description": """
+                Исследование крови, включающее определение количества эритроцитов,
+                лейкоцитов, гемоглобина и других показателей.
+                """,
                 "short_description": "Клинический анализ крови.",
                 "price": 1200,
                 "duration": 5,

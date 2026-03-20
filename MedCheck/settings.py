@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-from decouple import config
 from dotenv import load_dotenv
 
 # Загрузка переменных окружения
@@ -16,6 +15,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # Режим отладки
 DEBUG = True if os.getenv("DEBUG") == "True" else False
 
+# Флаг: работаем ли в Docker?
+IN_DOCKER = os.getenv("IN_DOCKER", "False").lower() in ("true", "1", "on", "yes")
 
 # Домены, которые будут использоваться
 ALLOWED_HOSTS = ["*"]
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
     "accounts",
     "services",
     "main",
+    "content",
     "django_extensions",
 ]
 
@@ -65,24 +67,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "MedCheck.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT", default=5432),
+        "NAME": os.getenv("DB_NAME", "medcheck"),
+        "USER": os.getenv("DB_USER", "postgres"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "postgres"),
+        "HOST": "db" if IN_DOCKER else "localhost",
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -98,10 +92,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/6.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 

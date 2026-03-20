@@ -136,23 +136,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <h5><i class="fas fa-clinic-medical me-2"></i>MedCheck</h5>
-                    <p class="text-muted">Современная медицинская клиника с широким спектром услуг и квалифицированными специалистами.</p>
+                    <h5><i class="fas fa-clinic-medical me-2"></i>{{ basement_label.title }}</h5>
+                    <p class="text-muted">{{ basement_label.content|linebreaks }}</p>
                 </div>
                 <div class="col-md-4">
                     <h5>Контакты</h5>
                     <ul class="list-unstyled text-muted">
-                        <li><i class="fas fa-map-marker-alt me-2"></i> г. Москва, ул. Медицинская, 15</li>
-                        <li><i class="fas fa-phone me-2"></i> +7 (495) 123-45-67</li>
-                        <li><i class="fas fa-envelope me-2"></i> info@medcheck.ru</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>
+                            <strong>{{ address.title }}</strong>
+                            <p>{{ address.content }}</p></li>
+                        <li><i class="fas fa-phone me-2"></i>
+                            <strong>{{ phones.title }}</strong>
+                            <p>{{ phones.content|linebreaks }}</p></li>
+                        <li><i class="fas fa-envelope me-2"></i>
+                            <strong>{{ email.title }}</strong>
+                            <p>{{ email.content|linebreaks }}</p></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
                     <h5>Режим работы</h5>
                     <ul class="list-unstyled text-muted">
-                        <li>Пн-Пт: 8:00 - 20:00</li>
-                        <li>Сб: 9:00 - 18:00</li>
-                        <li>Вс: 10:00 - 16:00</li>
+                        <li><i class="fas fa-clock me-2"></i>
+                    <strong>{{ opening.title }}</strong>
+                    <p>{{ opening.content|linebreaks }}</li>
                     </ul>
                 </div>
             </div>

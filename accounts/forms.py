@@ -88,11 +88,11 @@ class UserRegistrationForm(StileFormMixin, UserCreationForm):
             user.save()
         return user
 
-    def clean_phone_number(self):
-        phone_number = self.cleaned_data.get("phone_number")
-        if phone_number and not phone_number.isdigit():
+    def clean_phone(self):
+        phone = self.cleaned_data.get("phone")
+        if phone and not phone.isdigit():
             raise forms.ValidationError("Номер телефона должен содержать только цифры.")
-        return phone_number
+        return phone
 
     def clean_image(self):
         """Метод очистки и проверки поля 'image'"""

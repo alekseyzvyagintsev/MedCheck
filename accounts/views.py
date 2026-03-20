@@ -1,11 +1,12 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
+from content.content import get_common_context
 from services.models import Appointment, DiagnosisResult
 
 from .forms import UserProfileForm, UserRegistrationForm
@@ -32,7 +33,10 @@ def register(request):
     else:
         form = UserRegistrationForm()
 
-    return render(request, "accounts/register.html", {"form": form})
+    context = get_common_context()
+    context = {**context, "form": form}
+
+    return render(request, "accounts/register.html", context)
 
 
 @login_required
@@ -40,8 +44,6 @@ def profile(request):
     """
     Просмотр и редактирование профиля
     """
-    # Проверяем, может ли пользователь просматривать этот профиль
-    # Убрал проверку, так как она была некорректной (всегда возвращает False)
 
     if request.method == "POST":
         form = UserProfileForm(request.POST, request.FILES, instance=request.user)
@@ -54,21 +56,28 @@ def profile(request):
 
     # Получаем записи на приём пользователя как пациента
     active_appointments = Appointment.objects.filter(
-        patient=request.user,
-        is_active=True,
-        scheduled_at__gte=timezone.now()
-    ).select_related('service', 'doctor')
+        patient=request.user, is_active=True, scheduled_at__gte=timezone.now()
+    ).select_related("service", "doctor")
 
     # Получаем результаты диагностики пользователя
-    diagnosis_results = DiagnosisResult.objects.filter(
-        appointment__patient=request.user
-    ).select_related('appointment__service', 'appointment__doctor').order_by('-uploaded_at')
+    diagnosis_results = (
+        DiagnosisResult.objects.filter(appointment__patient=request.user)
+        .select_related("appointment__service", "appointment__doctor")
+        .order_by("-uploaded_at")
+    )
 
-    return render(request, "accounts/profile.html", {
-        "form": form,
+    context = get_common_context()
+    context = {
+        **context,
         "active_appointments": active_appointments,
-        "diagnosis_results": diagnosis_results
-    })
+        "diagnosis_results": diagnosis_results,
+        "form": form,
+    }
+    return render(
+        request,
+        "accounts/profile.html",
+        context,
+    )
 
 
 @login_required
@@ -93,18 +102,20 @@ def create_doctor(request):
     else:
         form = UserRegistrationForm()
 
-    return render(request, "accounts/create_doctor.html", {"form": form})
+    context = get_common_context()
+    context = {**context, "form": form}
+
+    return render(request, "accounts/create_doctor.html", context)
 
 
 # Используем встроенные представления Django для входа и выхода
 login_view = auth_views.LoginView.as_view(template_name="accounts/login.html")
 
 
-# Просто перенаправляем на главную страницу
 def logout_view(request):
-    from django.contrib.auth import logout
-    from django.shortcuts import redirect
-
+    """
+    Выход из системы
+    """
     logout(request)
     return redirect("main:home")
 
@@ -119,5 +130,5 @@ def delete_profile(request):
         user.delete()
         messages.success(request, "Ваш аккаунт успешно удален")
         return redirect("main:home")
-    
+
     return redirect("accounts:profile")

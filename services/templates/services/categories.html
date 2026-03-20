@@ -56,20 +56,14 @@
                     <div class="service-card-body">
                         {% with main_image=category.get_main_image %}
                             {% if main_image %}
-                                <img src="{{ main_image.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
+                                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
                             {% else %}
-                                {% with fallback_image=category.get_fallback_image %}
-                                    {% if fallback_image %}
-                                        <img src="{{ fallback_image.image.url }}" alt="{{ category.name }}" class="img-fluid service-card-img mb-3">
-                                    {% else %}
-                                        <img src="/static/images/placeholder.jpg" alt="Нет изображения" class="img-fluid service-card-img mb-3">
-                                    {% endif %}
-                                {% endwith %}
+                                <img src="/media/service_category_images/base_category_image.jpg" alt="Нет изображения" class="img-fluid service-card-img mb-3">
                             {% endif %}
                         {% endwith %}
                         <h3>{{ category.name }}</h3>
                         <p>{{ category.description }}</p>
-                        <a href="{% url 'services:category-services' category.id %}" class="btn btn-primary">Подробнее</a>
+                        <a href="{% url 'services:category_services' category.id %}" class="btn btn-primary">Подробнее</a>
                     </div>
                 </div>
             </div>

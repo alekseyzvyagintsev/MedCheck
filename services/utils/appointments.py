@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
+from django.db import transaction
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -48,38 +49,46 @@ def render_error(request, error_message):
 
 def create_appointment_logic(patient, service_id, doctor_id, scheduled_at):
     """
-    Бизнес-логика создания записи на приём.
+    Бизнес-логика создания записи на приём с использованием транзакции.
     Принимает готовый datetime объект
     """
     try:
-        # Получаем модели
-        service = Service.objects.get(id=service_id)
-        doctor = User.objects.get(id=doctor_id)
-
-        # Проверяем доступность слота
-        if not Appointment.is_slot_available(doctor, scheduled_at):
-            return False, {
-                "error": "Выбранный слот недоступен. Пожалуйста, выберите другое время."
-            }
-
-        # Проверяем, что дата и время в будущем
-        if scheduled_at <= timezone.now():
-            return False, {"error": "Нельзя записаться на прошедшее время и дату"}
-
-        # Преобразуем scheduled_at в строку для сравнения
+        # Преобразуем строку в datetime при необходимости
         if isinstance(scheduled_at, str):
             try:
                 scheduled_at = parse_datetime_string(scheduled_at)
             except ValueError as e:
                 return False, {"error": str(e)}
 
-        # Создаём запись
-        appointment = Appointment.objects.create(
-            patient=patient,
-            service=service,
-            doctor=doctor,
-            scheduled_at=scheduled_at,
-        )
+        # Проверяем, что время в будущем
+        if scheduled_at <= timezone.now():
+            return False, {"error": "Нельзя записаться на прошедшее время и дату"}
+
+        with transaction.atomic():
+            # "transaction.atomic()" Гарантирует, что, либо все операции пройдут, либо ни одна.
+            # Получаем врача и сервис с блокировкой строк "select_for_update()"
+            # (для предотвращения race condition до конца транзакции, предотвращая параллельные изменения)
+            try:
+                doctor = User.objects.select_for_update().get(id=doctor_id)
+                service = Service.objects.get(id=service_id)
+            except User.DoesNotExist:
+                return False, {"error": "Врач не найден"}
+            except Service.DoesNotExist:
+                return False, {"error": "Услуга не найдена"}
+
+            # Повторно проверяем доступность слота уже внутри транзакции
+            if not Appointment.is_slot_available(doctor, scheduled_at):
+                return False, {
+                    "error": "Выбранный слот недоступен. Пожалуйста, выберите другое время."
+                }
+
+            # Создаём запись
+            appointment = Appointment.objects.create(
+                patient=patient,
+                service=service,
+                doctor=doctor,
+                scheduled_at=scheduled_at,
+            )
 
         return True, {
             "success": True,
@@ -87,10 +96,6 @@ def create_appointment_logic(patient, service_id, doctor_id, scheduled_at):
             "appointment_id": appointment.id,
         }
 
-    except Service.DoesNotExist:
-        return False, {"error": "Услуга не найдена"}
-    except User.DoesNotExist:
-        return False, {"error": "Врач не найден"}
     except Exception as e:
         return False, {"error": f"Ошибка при создании записи: {str(e)}"}
 
@@ -119,7 +124,6 @@ def delete_appointment_logic(appointment_id, user):
 
         # Деактивируем запись
         appointment.is_active = False
-        appointment.status = "cancelled"
         appointment.save()
 
         return True, {"success": True, "message": "Запись успешно отменена!"}

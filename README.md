@@ -87,8 +87,7 @@ MedCheck/
 
 1. Клонировать репозиторий:
 ```bash
-git clone <https://github.com/alekseyzvyagintsev/MedCheck>
-cd MedCheck
+git clone https://github.com/alekseyzvyagintsev/MedCheck.git && cd MedCheck
 ```
 
 2. Установить зависимости:
